@@ -13,7 +13,7 @@ import java.util.UUID;
 
 /**
  * Vouchley API
- * Serves as the main class for the Vouchley API.
+ * A utility to access Vouchley's API with ease.
  */
 public class VouchleyAPI {
 
