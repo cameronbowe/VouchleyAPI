@@ -109,7 +109,7 @@ public class VouchleyUserReview {
 	 *
 	 * @return The value of the user's review.
 	 */
-	public double getValue() {
+	public Double getValue() {
 		return this.value; //Return the value of the user's review.
 	}
 
@@ -118,7 +118,7 @@ public class VouchleyUserReview {
 	 *
 	 * @return The rating of the user's review.
 	 */
-	public int getRating() {
+	public Integer getRating() {
 		return this.rating; //Return the rating of the user's review.
 	}
 
@@ -127,7 +127,7 @@ public class VouchleyUserReview {
 	 *
 	 * @return The time the user's review was sent.
 	 */
-	public long getTimeSent() {
+	public Long getTimeSent() {
 		return this.timeSent; //Return the time the user's review was sent.
 	}
 

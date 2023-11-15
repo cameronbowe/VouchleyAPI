@@ -195,7 +195,7 @@ public class VouchleyUser {
 	 *
 	 * @return The average rating of the user.
 	 */
-	public int getAverageRating() {
+	public Integer getAverageRating() {
 		return this.averageRating; //Return the average rating of the user.
 	}
 
@@ -204,7 +204,7 @@ public class VouchleyUser {
 	 *
 	 * @return The total value traded of the user.
 	 */
-	public double getTotalValueTraded() {
+	public Double getTotalValueTraded() {
 		return this.totalValueTraded; //Return the total value traded of the user.
 	}
 
