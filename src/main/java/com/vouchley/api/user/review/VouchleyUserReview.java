@@ -82,7 +82,7 @@ public class VouchleyUserReview {
 	 *
 	 * @return The ID of the user's review.
 	 */
-	public UUID getID() {
+	public UUID getId() {
 		return this.id; //Return the ID of the user's review.
 	}
 
