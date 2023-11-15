@@ -17,6 +17,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -181,9 +182,11 @@ public class VouchleyUser {
 	/**
 	 * Allows you to get the reviews of the user.
 	 *
+	 * @implNote May return an empty list.
+	 *
 	 * @return The reviews of the user.
 	 */
-	public ArrayList<VouchleyUserReview> getReviews() {
+	public List<VouchleyUserReview> getReviews() {
 		return this.reviews; //Return the reviews of the user.
 	}
 
@@ -212,7 +215,7 @@ public class VouchleyUser {
 	 *
 	 * @return The donator badges of the user.
 	 */
-	public ArrayList<Integer> getDonatorBadges() {
+	public List<Integer> getDonatorBadges() {
 		return this.donatorBadges; //Return the donator badges of the user.
 	}
 
