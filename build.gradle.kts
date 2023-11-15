@@ -38,17 +38,9 @@ publishing {
     publications {
         register("mavenJava", MavenPublication::class) {
             from(components["java"]) //Publish the java component.
-            artifact(tasks.named("shadowJar").get()) //Publish the shadow jar.
+            artifact(tasks.named("shadowJar").get()) { classifier = "all" } //Publish the shadow jar.
             pom { //Publish the pom.
-                name.set(project.name) //The project's name.
-                description.set(project.description) //The project's description.
-                url.set("https://vouchley.net") //The project's url.
-                licenses {
-                    license {
-                        name.set("MIT")
-                        url.set("https://opensource.org/licenses/MIT")
-                    }
-                }
+                url.set("https://vouchley.com") //The project's url.
                 developers { //The project's developers.
                     developer { //The developer.
                         id.set("cameronbowe") //The developer's id.
