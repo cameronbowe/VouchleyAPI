@@ -6,11 +6,6 @@ plugins {
     id("com.github.johnrengelman.shadow").version("7.1.2") //Add shadow (for shading dependencies).
 }
 
-//The java information.
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(8)) //Set the java version to 8.
-}
-
 //The repositories (for dependencies).
 repositories {
     mavenCentral() //Add maven central repository (has literally 99% of the repositories).
@@ -28,7 +23,6 @@ tasks {
 
     //Handle java compilation.
     compileJava { //On java compilation.
-        options.release.set(8) //Make sure the java version is 8.
         options.encoding = "UTF-8" //Make sure text is UTF-8 (stuff bugs out otherwise).
     }
 
