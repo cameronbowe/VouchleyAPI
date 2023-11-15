@@ -37,15 +37,20 @@ publishing {
     }
     publications {
         register("mavenJava", MavenPublication::class) {
-//            from(components["java"]) //Publish the java component.
             artifact(tasks.named("shadowJar").get()) { classifier = "all" } //Publish the shadow jar.
-            pom { //Publish the pom.
+            pom { //The project's pom.
                 url.set("https://vouchley.com") //The project's url.
                 developers { //The project's developers.
                     developer { //The developer.
                         id.set("cameronbowe") //The developer's id.
                         name.set("Cameron Bowe") //The developer's name.
                         email.set(project.findProperty("ossrhEmail")?.toString()) //The developer's email.
+                    }
+                }
+                licenses { //The project's licenses.
+                    license {
+                        name.set("CC0-1.0")
+                        url.set("https://creativecommons.org/publicdomain/zero/1.0/legalcode.en")
                     }
                 }
                 scm { //The project's scm.
