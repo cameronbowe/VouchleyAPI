@@ -37,7 +37,7 @@ publishing {
     }
     publications {
         register("mavenJava", MavenPublication::class) {
-            from(components["java"]) //Publish the java component.
+//            from(components["java"]) //Publish the java component.
             artifact(tasks.named("shadowJar").get()) { classifier = "all" } //Publish the shadow jar.
             pom { //Publish the pom.
                 url.set("https://vouchley.com") //The project's url.
