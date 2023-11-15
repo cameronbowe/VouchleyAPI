@@ -1,5 +1,6 @@
 import java.net.URI
 
+group = "net.cameronbowe" //The project's group.
 version = "1.0.0" //The project's version.
 description = "A utility to access Vouchley's API with ease." //The project's description.
 
@@ -68,6 +69,7 @@ publishing {
 //The signing (of the maven publication).
 signing {
     sign(publishing.publications["mavenJava"]) //Sign the maven publication.
+    useGpgCmd() //Use the gpg command.
 }
 
 //Compilation.

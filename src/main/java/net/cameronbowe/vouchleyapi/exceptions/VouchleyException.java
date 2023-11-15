@@ -1,4 +1,4 @@
-package com.vouchley.api.exceptions;
+package net.cameronbowe.vouchleyapi.exceptions;
 
 /*
  * Made with ❤ by Cameron Bowe (https://cameronbowe.net).

@@ -1,4 +1,4 @@
-package com.vouchley.api.user.review;
+package net.cameronbowe.vouchleyapi.user.review;
 
 /*
  * Made with ❤ by Cameron Bowe (https://cameronbowe.net).
@@ -8,7 +8,7 @@ package com.vouchley.api.user.review;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.vouchley.api.exceptions.VouchleyException;
+import net.cameronbowe.vouchleyapi.exceptions.VouchleyException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;

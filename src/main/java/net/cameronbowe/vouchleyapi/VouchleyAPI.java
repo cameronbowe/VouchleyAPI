@@ -1,13 +1,13 @@
-package com.vouchley.api;
+package net.cameronbowe.vouchleyapi;
 
 /*
  * Made with ❤ by Cameron Bowe (https://cameronbowe.net).
  * Copyright (©) 2023, all rights reserved.
  */
 
-import com.vouchley.api.exceptions.VouchleyException;
-import com.vouchley.api.user.VouchleyUser;
-import com.vouchley.api.user.review.VouchleyUserReview;
+import net.cameronbowe.vouchleyapi.exceptions.VouchleyException;
+import net.cameronbowe.vouchleyapi.user.VouchleyUser;
+import net.cameronbowe.vouchleyapi.user.review.VouchleyUserReview;
 
 import java.util.UUID;
 
