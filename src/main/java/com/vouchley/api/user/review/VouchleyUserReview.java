@@ -28,7 +28,7 @@ public class VouchleyUserReview {
 	private final double value; //The value of the user's review.
 	private final int rating; //The rating of the user's review.
 	private final long timeSent; //The time the user's review was sent.
-	private final String message, platform, product; //The message, platform, and product of the user's review.
+	private final String message, reply, platform, product; //The message, reply, platform, and product of the user's review.
 
 	/**
 	 * Allows you to create a user's review.
@@ -40,10 +40,11 @@ public class VouchleyUserReview {
 	 * @param rating The rating of the user's review.
 	 * @param timeSent The time the user's review was sent.
 	 * @param message The message of the user's review.
+	 * @param reply The reply of the user's review.
 	 * @param platform The platform of the user's review.
 	 * @param product The product of the user's review.
 	 */
-	private VouchleyUserReview(final UUID id, final UUID receiver, final UUID sender, final double value, final int rating, final long timeSent, final String message, final String platform, final String product) {
+	private VouchleyUserReview(final UUID id, final UUID receiver, final UUID sender, final double value, final int rating, final long timeSent, final String message, final String reply, final String platform, final String product) {
 		this.id = id; //Set the ID of the user's review.
 		this.receiver = receiver; //Set the receiver of the user's review.
 		this.sender = sender; //Set the sender of the user's review.
@@ -51,6 +52,7 @@ public class VouchleyUserReview {
 		this.rating = rating; //Set the rating of the user's review.
 		this.timeSent = timeSent; //Set the time the user's review was sent.
 		this.message = message; //Set the message of the user's review.
+		this.reply = reply; //Set the reply of the user's review.
 		this.platform = platform; //Set the platform of the user's review.
 		this.product = product; //Set the product of the user's review.
 	}
@@ -69,7 +71,7 @@ public class VouchleyUserReview {
 		try (final CloseableHttpResponse response = HttpClients.createMinimal().execute(new HttpGet("https://www.vouchley.com/api/v1/review?id=" + id.toString()))) { //Create the request.
 			if (response.getStatusLine().getStatusCode() != 200) return null; //If the request failed, return null.
 			final JsonObject jsonObject = JsonParser.parseString(EntityUtils.toString(response.getEntity())).getAsJsonObject(); //Parse the response.
-			return new VouchleyUserReview(UUID.fromString(jsonObject.get("id").getAsString()), UUID.fromString(jsonObject.get("receiver").getAsString()), UUID.fromString(jsonObject.get("sender").getAsString()), jsonObject.get("value").getAsDouble(), jsonObject.get("rating").getAsInt(), jsonObject.get("timeSent").getAsLong(), jsonObject.get("message").getAsString(), jsonObject.get("platform").getAsString(), Optional.ofNullable(jsonObject.get("product")).map(JsonElement::getAsString).orElse(null)); //Return the user's review.
+			return new VouchleyUserReview(UUID.fromString(jsonObject.get("id").getAsString()), UUID.fromString(jsonObject.get("receiver").getAsString()), UUID.fromString(jsonObject.get("sender").getAsString()), jsonObject.get("value").getAsDouble(), jsonObject.get("rating").getAsInt(), jsonObject.get("timeSent").getAsLong(), jsonObject.get("message").getAsString(), Optional.ofNullable(jsonObject.get("reply")).map(JsonElement::getAsString).orElse(null), jsonObject.get("platform").getAsString(), Optional.ofNullable(jsonObject.get("product")).map(JsonElement::getAsString).orElse(null)); //Return the user's review.
 		} catch (final IOException exception) { //If an exception occurs, return null.
 			throw new VouchleyException("An exception occurred whilst retrieving a user's review."); //Throw an exception.
 		}
@@ -150,10 +152,23 @@ public class VouchleyUserReview {
 	/**
 	 * Allows you to get the product of the user's review.
 	 *
+	 * @implNote May return null.
+	 *
 	 * @return The product of the user's review.
 	 */
 	public String getProduct() {
 		return this.product; //Return the product of the user's review.
+	}
+
+	/**
+	 * Allows you to get the receiver's reply to the review.
+	 *
+	 * @implNote May return null.
+	 *
+	 * @return The receiver's reply to the review.
+	 */
+	public String getReply() {
+		return this.reply; //Return the receiver's reply to the review.
 	}
 
 }

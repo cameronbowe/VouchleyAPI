@@ -128,6 +128,8 @@ public class VouchleyUser {
 	/**
 	 * Allows you to get the display name of the user.
 	 *
+	 * @implNote May return an empty string.
+	 *
 	 * @return The display name of the user.
 	 */
 	public String getDisplayName() {
@@ -146,6 +148,8 @@ public class VouchleyUser {
 	/**
 	 * Allows you to get the title of the user.
 	 *
+	 * @implNote May return an empty string.
+	 *
 	 * @return The title of the user.
 	 */
 	public String getTitle() {
@@ -155,6 +159,8 @@ public class VouchleyUser {
 	/**
 	 * Allows you to get the avatar URL of the user.
 	 *
+	 * @implNote May return the default Vouchley avatar(s).
+	 *
 	 * @return The avatar URL of the user.
 	 */
 	public String getAvatarURL() {
@@ -163,6 +169,8 @@ public class VouchleyUser {
 
 	/**
 	 * Allows you to get the Discord ID of the user.
+	 *
+	 * @implNote May return an empty string.
 	 *
 	 * @return The Discord ID of the user.
 	 */
@@ -199,6 +207,8 @@ public class VouchleyUser {
 
 	/**
 	 * Allows you to get the donator badges of the user.
+	 *
+	 * @implNote May return an empty list.
 	 *
 	 * @return The donator badges of the user.
 	 */
