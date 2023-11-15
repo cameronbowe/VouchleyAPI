@@ -84,7 +84,6 @@ tasks {
         exclude("**/*.txt", "**./META-INF/*") //Exclude gibberish files.
     }
 
-
     //Publish to maven local.
     named("publishToMavenLocal").configure {
         doLast {
