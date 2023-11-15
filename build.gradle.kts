@@ -21,10 +21,6 @@ dependencies {
     //Shaded dependencies.
     implementation("com.google.code.gson", "gson", "2.8.8") //Implement GSON (for fantastic JSON usage).
     implementation("org.apache.httpcomponents", "httpclient", "4.5.13") //Implement apache http client (for http requests).
-
-    //Annotation dependencies.
-    compileOnly("org.jetbrains", "annotations", "24.0.1") //Compile only jetbrains annotations (for annotations).
-    annotationProcessor("org.jetbrains", "annotations", "24.0.1") //Annotation process jetbrains annotations (for annotations).
 }
 
 //Compilation.

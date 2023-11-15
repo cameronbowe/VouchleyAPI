@@ -1,2 +1,1 @@
-rootProject.name = "VouchleyAPI"
-
+rootProject.name = "VouchleyAPI" //The project's name.
