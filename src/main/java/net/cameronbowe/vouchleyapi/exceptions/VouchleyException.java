@@ -1,7 +1,7 @@
 package net.cameronbowe.vouchleyapi.exceptions;
 
 /*
- * Made with ❤ by Cameron Bowe (https://cameronbowe.net).
+ * Engineered with love by Cameron Bowe (https://cameronbowe.net).
  * Copyright (©) 2023, all rights reserved.
  */
 

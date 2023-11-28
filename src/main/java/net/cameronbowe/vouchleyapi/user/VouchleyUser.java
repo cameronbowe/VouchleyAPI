@@ -1,7 +1,7 @@
 package net.cameronbowe.vouchleyapi.user;
 
 /*
- * Made with ❤ by Cameron Bowe (https://cameronbowe.net).
+ * Engineered with love by Cameron Bowe (https://cameronbowe.net).
  * Copyright (©) 2023, all rights reserved.
  */
 
@@ -23,7 +23,7 @@ import java.util.UUID;
 
 /**
  * Vouchley User
- * Handles the data & implementation of a Vouchley user.
+ * Handles the data and implementation of a Vouchley user.
  */
 public class VouchleyUser {
 
@@ -67,7 +67,7 @@ public class VouchleyUser {
 	/*
 	 * Allows you to retrieve a Vouchley user via their ID.
 	 *
-	 * @implNote This method does call a remote
+	 * @apiNote This method does call a remote
 	 * API and should be run on a separate thread.
 	 *
 	 * @param id The ID of the user.
@@ -81,7 +81,7 @@ public class VouchleyUser {
 	/*
 	 * Allows you to retrieve a Vouchley user via their username.
 	 *
-	 * @implNote This method does call a remote
+	 * @apiNote This method does call a remote
 	 * API and should be run on a separate thread.
 	 *
 	 * @param username The username of the user.
@@ -95,7 +95,7 @@ public class VouchleyUser {
 	/*
 	 * Allows you to retrieve a Vouchley user.
 	 *
-	 * @implNote This method serves as a wrapper
+	 * @apiNote This method serves as a wrapper
 	 * to save code & time for retrieval methods.
 	 *
 	 * @param destination The destination for retrieving the user.
@@ -129,7 +129,7 @@ public class VouchleyUser {
 	/**
 	 * Allows you to get the display name of the user.
 	 *
-	 * @implNote May return an empty string.
+	 * @apiNote May return an empty string.
 	 *
 	 * @return The display name of the user.
 	 */
@@ -149,7 +149,7 @@ public class VouchleyUser {
 	/**
 	 * Allows you to get the title of the user.
 	 *
-	 * @implNote May return an empty string.
+	 * @apiNote May return an empty string.
 	 *
 	 * @return The title of the user.
 	 */
@@ -160,7 +160,7 @@ public class VouchleyUser {
 	/**
 	 * Allows you to get the avatar URL of the user.
 	 *
-	 * @implNote May return the default Vouchley avatar(s).
+	 * @apiNote May return the default Vouchley avatar(s).
 	 *
 	 * @return The avatar URL of the user.
 	 */
@@ -171,7 +171,7 @@ public class VouchleyUser {
 	/**
 	 * Allows you to get the Discord ID of the user.
 	 *
-	 * @implNote May return an empty string.
+	 * @apiNote May return an empty string.
 	 *
 	 * @return The Discord ID of the user.
 	 */
@@ -182,7 +182,7 @@ public class VouchleyUser {
 	/**
 	 * Allows you to get the reviews of the user.
 	 *
-	 * @implNote May return an empty list.
+	 * @apiNote May return an empty list.
 	 *
 	 * @return The reviews of the user.
 	 */
@@ -211,7 +211,7 @@ public class VouchleyUser {
 	/**
 	 * Allows you to get the donator badges of the user.
 	 *
-	 * @implNote May return an empty list.
+	 * @apiNote May return an empty list.
 	 *
 	 * @return The donator badges of the user.
 	 */

@@ -1,7 +1,7 @@
 package net.cameronbowe.vouchleyapi.user.review;
 
 /*
- * Made with ❤ by Cameron Bowe (https://cameronbowe.net).
+ * Engineered with love by Cameron Bowe (https://cameronbowe.net).
  * Copyright (©) 2023, all rights reserved.
  */
 
@@ -20,7 +20,7 @@ import java.util.UUID;
 
 /*
  * Vouchley User Review
- * Handles the data & implementation of a Vouchley user's review.
+ * Handles the data and implementation of a Vouchley user's review.
  */
 public class VouchleyUserReview {
 
@@ -60,7 +60,7 @@ public class VouchleyUserReview {
 	/*
 	 * Allows you to retrieve a Vouchley user's review via its ID.
 	 *
-	 * @implNote This method does call a remote
+	 * @apiNote This method does call a remote
 	 * API and should be run on a separate thread.
 	 *
 	 * @param id The ID of the user's review.
@@ -152,7 +152,7 @@ public class VouchleyUserReview {
 	/**
 	 * Allows you to get the product of the user's review.
 	 *
-	 * @implNote May return null.
+	 * @apiNote May return null.
 	 *
 	 * @return The product of the user's review.
 	 */
@@ -163,7 +163,7 @@ public class VouchleyUserReview {
 	/**
 	 * Allows you to get the receiver's reply to the review.
 	 *
-	 * @implNote May return null.
+	 * @apiNote May return null.
 	 *
 	 * @return The receiver's reply to the review.
 	 */

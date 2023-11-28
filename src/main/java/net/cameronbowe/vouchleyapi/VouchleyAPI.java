@@ -1,7 +1,7 @@
 package net.cameronbowe.vouchleyapi;
 
 /*
- * Made with ❤ by Cameron Bowe (https://cameronbowe.net).
+ * Engineered with love by Cameron Bowe (https://cameronbowe.net).
  * Copyright (©) 2023, all rights reserved.
  */
 
@@ -20,7 +20,7 @@ public class VouchleyAPI {
 	/*
 	 * Allows you to retrieve a Vouchley user via their ID.
 	 *
-	 * @implNote This method does call a remote
+	 * @apiNote This method does call a remote
 	 * API and should be run on a separate thread.
 	 *
 	 * @param id The ID of the user.
@@ -34,7 +34,7 @@ public class VouchleyAPI {
 	/*
 	 * Allows you to retrieve a Vouchley user via their username.
 	 *
-	 * @implNote This method does call a remote
+	 * @apiNote This method does call a remote
 	 * API and should be run on a separate thread.
 	 *
 	 * @param id The username of the user.
@@ -48,7 +48,7 @@ public class VouchleyAPI {
 	/*
 	 * Allows you to retrieve a Vouchley user's review via its ID.
 	 *
-	 * @implNote This method does call a remote
+	 * @apiNote This method does call a remote
 	 * API and should be run on a separate thread.
 	 *
 	 * @param id The ID of the user's review.
