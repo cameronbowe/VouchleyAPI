@@ -130,17 +130,17 @@ publishing {
                 //The license information.
                 licenses {
                     license {
-                        name = "Creative Commons Zero v1.0 Universal"
-                        url = "https://creativecommons.org/publicdomain/zero/1.0/"
+                        name = "Creative Commons Zero v1.0 Universal" //Set the name.
+                        url = "https://creativecommons.org/publicdomain/zero/1.0/" //Set the URL.
                     }
                 }
 
                 //The developer information.
                 developers {
                     developer {
-                        id = "cameronbowe"
-                        name = "Cameron Bowe"
-                        email = "contact@cameronbowe.net"
+                        id = "cameronbowe" //Set the ID.
+                        name = "Cameron Bowe" //Set the name.
+                        email = "contact@cameronbowe.net" //Set the email.
                     }
                 }
 
