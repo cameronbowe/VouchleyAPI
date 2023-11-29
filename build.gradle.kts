@@ -1,5 +1,4 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import org.gradle.initialization.Environment.Properties
 
 //The project's information.
 group = "net.cameronbowe" //The project's group.
@@ -11,6 +10,7 @@ plugins {
     id("java") //Add the java plugin (for java development).
     id("signing") //Add the signing plugin (for signing to publish to maven).
     id("maven-publish") //Add the maven publish plugin (for publishing to maven).
+    id("com.github.breadmoirai.github-release").version("2.5.2") //Add the github release plugin (for releasing to github).
     id("com.github.johnrengelman.shadow").version("7.1.2") //Add shadow (for shading dependencies).
 }
 
@@ -29,8 +29,28 @@ dependencies {
 //The tasks.
 tasks {
 
+    //The moving of old files task.
+    task("moveOldFiles", type = Copy::class) {
+        val versionRegex = Regex("""${project.version}""") //The version regex.
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE //Include duplicates.
+        val oldFiles = fileTree("build/libs") { include { fileTreeElement -> !fileTreeElement.isDirectory && !versionRegex.containsMatchIn(fileTreeElement.name) } } //Get the old files.
+        if (oldFiles.isEmpty) return@task //If there are no old files, return.
+        from(oldFiles) //From the old files.
+        into("build/libs/other") //Into the other libs folder.
+        doLast { delete(oldFiles) } //Delete the old files.
+    }
+
+    //The publishing task.
+    task("publishEverything") {
+        println("Publishing everything...")
+        dependsOn("publish", "githubRelease") //Depend on publishing and github release (to publish everything).
+        println("Publishing everything!")
+    }
+
     //The without dependencies jar creation task.
     task("withoutDepends", type = Jar::class) {
+        dependsOn("moveOldFiles") //Depend on moving old files.
+        delete("${project.name}-${project.version}-without-depends.jar") //Delete the old jar (if it exists).
         from(sourceSets.main.get().allSource) //Add the main sources.
         archiveClassifier.set("withoutDepends") //Set the classifier.
         archiveFileName.set("${project.name}-${project.version}-without-depends.jar") //Set the file name.
@@ -38,6 +58,8 @@ tasks {
 
     //The with dependencies jar creation task.
     task("withDepends", type = ShadowJar::class) {
+        dependsOn("moveOldFiles") //Depend on moving old files.
+        delete("${project.name}-${project.version}-with-depends.jar") //Delete the old jar (if it exists).
         from(sourceSets.main.get().allSource) //Add the main sources.
         archiveClassifier.set("withDepends") //Set the classifier.
         configurations = listOf(project.configurations.runtimeClasspath.get()) //Set the configurations.
@@ -46,6 +68,22 @@ tasks {
         relocate("org.apache", "net.cameronbowe.relocated.org.apache") //Relocate apache (so it doesn't conflict with other plugins).
         exclude("mozilla/**", "META-INF/**", "module-info.class") //Exclude some stuff.
     }
+
+}
+
+//The github release.
+githubRelease {
+    token(findProperty("githubToken") as String?) //Set the token.
+    releaseName = "${project.version}" //Set the release name.
+    tagName = "${project.version}" //Set the tag name.
+    targetCommitish = "master" //Set the target commitish.
+    body = "The release of version ${project.version}." //Set the body.
+    releaseAssets.setFrom(tasks["withDepends"], tasks["withoutDepends"]) //Set the release assets.
+    generateReleaseNotes.set(false) //Don't generate release notes.
+    allowUploadToExisting.set(true) //Allow upload to existing.
+    dryRun.set(false) //Don't dry run.
+    overwrite.set(true) //Allow overwrite.
+    draft.set(false) //Don't make the release a draft.
 
 }
 
