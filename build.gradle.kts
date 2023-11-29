@@ -49,7 +49,6 @@ tasks {
     jar {
         dependsOn("moveOldFiles") //Depend on moving old files.
         delete("${project.name}-${project.version}.jar") //Delete the old jar (if it exists).
-        from(sourceSets.main.get().allSource) //Add the main sources.
         archiveClassifier.set("") //Set the classifier.
         archiveFileName.set("${project.name}-${project.version}.jar") //Set the archive file name.
     }
@@ -58,7 +57,6 @@ tasks {
     shadowJar {
         dependsOn("moveOldFiles") //Depend on moving old files.
         delete("${project.name}-${project.version}-shaded.jar") //Delete the old jar (if it exists).
-        from(sourceSets.main.get().allSource) //Add the main sources.
         archiveClassifier.set("shaded") //Set the classifier.
         configurations = listOf(project.configurations.runtimeClasspath.get()) //Set the configurations.
         archiveFileName.set("${project.name}-${project.version}-shaded.jar") //Set the archive file name.
@@ -113,7 +111,7 @@ publishing {
             artifactId = project.name //Set the artifact ID.
             groupId = project.group.toString() //Set the group ID.
             version = project.version.toString() //Set the version.
-            from(components["java"]) //From the java component.
+            from(components["java"]) //Set the artifact.
 
             //The pom information.
             pom {
@@ -122,6 +120,7 @@ publishing {
                 name = project.name //Set the name.
                 url = "https://www.vouchley.com/" //Set the URL.
                 description = project.description //Set the description.
+                packaging = "jar" //Set the packaging.
 
                 //The license information.
                 licenses {
