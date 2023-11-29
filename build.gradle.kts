@@ -24,15 +24,13 @@ dependencies {
     implementation("org.apache.httpcomponents", "httpclient", "4.5.13") //Implement apache http client (for http requests).
 }
 
+//The java information.
+java {
+    withJavadocJar() //Create a javadoc jar.
+}
+
 //The tasks.
 tasks {
-
-    //The publishing task.
-    task("publishEverything") {
-        println("Publishing everything...") //Log that everything is being published.
-        dependsOn("publish", "githubRelease") //Depend on publishing and github release (to publish everything).
-        println("Publishing everything!") //Log that everything has been published.
-    }
 
     //The moving of old files task.
     task("moveOldFiles", type = Copy::class) {
@@ -45,11 +43,27 @@ tasks {
         doLast { delete(oldFiles) } //Delete the old files.
     }
 
+    //The javadoc creation task.
+    javadoc {
+        dependsOn("moveOldFiles") //Depend on moving old files.
+        delete("${project.name}-${project.version}-javadoc.jar") //Delete the old jar (if it exists).
+        options {
+            encoding = "UTF-8" //Set the encoding.
+            title = project.name //Set the title.
+            header = project.name //Set the header.
+            version = project.version.toString() //Set the version.
+            description = project.description.toString() //Set the description.
+        }
+    }
+
     //The jar creation task.
     jar {
         dependsOn("moveOldFiles") //Depend on moving old files.
         delete("${project.name}-${project.version}.jar") //Delete the old jar (if it exists).
+
         archiveClassifier.set("") //Set the classifier.
+        from(sourceSets.main.get().allSource) //Add the main sources
+        exclude { fileTreeElement -> fileTreeElement.name.endsWith(".class") && fileTreeElement.path.startsWith("net/cameronbowe/vouchleyapi") } //Exclude class files.
         archiveFileName.set("${project.name}-${project.version}.jar") //Set the archive file name.
     }
 
@@ -57,12 +71,22 @@ tasks {
     shadowJar {
         dependsOn("moveOldFiles") //Depend on moving old files.
         delete("${project.name}-${project.version}-shaded.jar") //Delete the old jar (if it exists).
+
         archiveClassifier.set("shaded") //Set the classifier.
+        from(sourceSets.main.get().allSource) //Add the main sources.
+        exclude { fileTreeElement -> fileTreeElement.name.endsWith(".class") && fileTreeElement.path.startsWith("net/cameronbowe/vouchleyapi") } //Exclude class files.
         configurations = listOf(project.configurations.runtimeClasspath.get()) //Set the configurations.
         archiveFileName.set("${project.name}-${project.version}-shaded.jar") //Set the archive file name.
         relocate("com.google.gson", "net.cameronbowe.relocated.com.google.gson") //Relocate gson (so it doesn't conflict with other plugins).
         relocate("org.apache", "net.cameronbowe.relocated.org.apache") //Relocate apache (so it doesn't conflict with other plugins).
         exclude("mozilla/**", "META-INF/**", "module-info.class") //Exclude some stuff.
+    }
+
+    //The publishing task.
+    task("publishEverything") {
+        println("Publishing everything...") //Log that everything is being published.
+        dependsOn("publish", "githubRelease") //Depend on publishing and github release (to publish everything).
+        println("Publishing everything!") //Log that everything has been published.
     }
 
 }
@@ -76,7 +100,7 @@ githubRelease {
     targetCommitish = "master" //Set the target commitish.
     releaseName = "${project.version}" //Set the release name.
     body = "The release of version ${project.version}." //Set the body.
-    releaseAssets.setFrom(tasks["shadowJar"].outputs.files, tasks["jar"].outputs.files) //Set the release assets.
+    releaseAssets.setFrom(tasks["shadowJar"].outputs.files, tasks["javadoc"].outputs.files.filter { file -> file.name.endsWith(".jar") }, tasks["jar"].outputs.files) //Set the release assets.
 
     //The release options.
     generateReleaseNotes.set(false) //Don't generate release notes.

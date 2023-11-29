@@ -20,7 +20,7 @@ public class VouchleyAPI {
 	/*
 	 * Allows you to retrieve a Vouchley user via their ID.
 	 *
-	 * @apiNote This method does call a remote
+	 * This method does call a remote
 	 * API and should be run on a separate thread.
 	 *
 	 * @param id The ID of the user.
@@ -34,7 +34,7 @@ public class VouchleyAPI {
 	/*
 	 * Allows you to retrieve a Vouchley user via their username.
 	 *
-	 * @apiNote This method does call a remote
+	 * This method does call a remote
 	 * API and should be run on a separate thread.
 	 *
 	 * @param id The username of the user.
@@ -48,7 +48,7 @@ public class VouchleyAPI {
 	/*
 	 * Allows you to retrieve a Vouchley user's review via its ID.
 	 *
-	 * @apiNote This method does call a remote
+	 * This method does call a remote
 	 * API and should be run on a separate thread.
 	 *
 	 * @param id The ID of the user's review.

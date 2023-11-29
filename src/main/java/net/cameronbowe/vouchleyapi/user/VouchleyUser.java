@@ -67,7 +67,7 @@ public class VouchleyUser {
 	/*
 	 * Allows you to retrieve a Vouchley user via their ID.
 	 *
-	 * @apiNote This method does call a remote
+	 * This method does call a remote
 	 * API and should be run on a separate thread.
 	 *
 	 * @param id The ID of the user.
@@ -81,7 +81,7 @@ public class VouchleyUser {
 	/*
 	 * Allows you to retrieve a Vouchley user via their username.
 	 *
-	 * @apiNote This method does call a remote
+	 * This method does call a remote
 	 * API and should be run on a separate thread.
 	 *
 	 * @param username The username of the user.
@@ -95,7 +95,7 @@ public class VouchleyUser {
 	/*
 	 * Allows you to retrieve a Vouchley user.
 	 *
-	 * @apiNote This method serves as a wrapper
+	 * This method serves as a wrapper
 	 * to save code & time for retrieval methods.
 	 *
 	 * @param destination The destination for retrieving the user.
@@ -128,8 +128,8 @@ public class VouchleyUser {
 
 	/**
 	 * Allows you to get the display name of the user.
-	 *
-	 * @apiNote May return an empty string.
+	 * <p>
+	 * May return an empty string.
 	 *
 	 * @return The display name of the user.
 	 */
@@ -148,8 +148,8 @@ public class VouchleyUser {
 
 	/**
 	 * Allows you to get the title of the user.
-	 *
-	 * @apiNote May return an empty string.
+	 * <p>
+	 * May return an empty string.
 	 *
 	 * @return The title of the user.
 	 */
@@ -159,8 +159,8 @@ public class VouchleyUser {
 
 	/**
 	 * Allows you to get the avatar URL of the user.
-	 *
-	 * @apiNote May return the default Vouchley avatar(s).
+	 * <p>
+	 * May return the default Vouchley avatar(s).
 	 *
 	 * @return The avatar URL of the user.
 	 */
@@ -170,8 +170,8 @@ public class VouchleyUser {
 
 	/**
 	 * Allows you to get the Discord ID of the user.
-	 *
-	 * @apiNote May return an empty string.
+	 * <p>
+	 * May return an empty string.
 	 *
 	 * @return The Discord ID of the user.
 	 */
@@ -181,8 +181,8 @@ public class VouchleyUser {
 
 	/**
 	 * Allows you to get the reviews of the user.
-	 *
-	 * @apiNote May return an empty list.
+	 * <p>
+	 * May return an empty list.
 	 *
 	 * @return The reviews of the user.
 	 */
@@ -210,8 +210,8 @@ public class VouchleyUser {
 
 	/**
 	 * Allows you to get the donator badges of the user.
-	 *
-	 * @apiNote May return an empty list.
+	 * <p>
+	 * May return an empty list.
 	 *
 	 * @return The donator badges of the user.
 	 */

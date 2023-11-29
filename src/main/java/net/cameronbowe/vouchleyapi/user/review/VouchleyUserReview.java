@@ -60,7 +60,7 @@ public class VouchleyUserReview {
 	/*
 	 * Allows you to retrieve a Vouchley user's review via its ID.
 	 *
-	 * @apiNote This method does call a remote
+	 * This method does call a remote
 	 * API and should be run on a separate thread.
 	 *
 	 * @param id The ID of the user's review.
@@ -151,8 +151,8 @@ public class VouchleyUserReview {
 
 	/**
 	 * Allows you to get the product of the user's review.
-	 *
-	 * @apiNote May return null.
+	 * <p>
+	 * May return null.
 	 *
 	 * @return The product of the user's review.
 	 */
@@ -162,8 +162,8 @@ public class VouchleyUserReview {
 
 	/**
 	 * Allows you to get the receiver's reply to the review.
-	 *
-	 * @apiNote May return null.
+	 * <p>
+	 * May return null.
 	 *
 	 * @return The receiver's reply to the review.
 	 */
