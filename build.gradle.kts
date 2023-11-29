@@ -1,6 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import java.nio.file.Files
-
 //The project's information.
 group = "net.cameronbowe" //The project's group.
 version = "1.0.0" //The project's version.
