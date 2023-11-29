@@ -27,14 +27,6 @@ dependencies {
 //The tasks.
 tasks {
 
-    jar {
-        delete("${project.name}-${project.version}.jar")
-    }
-
-    shadowJar {
-        delete("${project.name}-${project.version}-all.jar")
-    }
-
     //The publishing task.
     task("publishEverything") {
         println("Publishing everything...") //Log that everything is being published.
@@ -56,20 +48,20 @@ tasks {
     //The jar creation task.
     jar {
         dependsOn("moveOldFiles") //Depend on moving old files.
-        delete("${project.name}-${project.version}-without-depends.jar") //Delete the old jar (if it exists).
+        delete("${project.name}-${project.version}.jar") //Delete the old jar (if it exists).
         from(sourceSets.main.get().allSource) //Add the main sources.
-        archiveClassifier.set("withoutDepends") //Set the classifier.
-        archiveFileName.set("${project.name}-${project.version}-without-depends.jar") //Set the file name.
+        archiveClassifier.set("") //Set the classifier.
+        archiveFileName.set("${project.name}-${project.version}.jar") //Set the archive file name.
     }
 
     //The shadow jar creation task.
     shadowJar {
         dependsOn("moveOldFiles") //Depend on moving old files.
-        delete("${project.name}-${project.version}-with-depends.jar") //Delete the old jar (if it exists).
+        delete("${project.name}-${project.version}-shaded.jar") //Delete the old jar (if it exists).
         from(sourceSets.main.get().allSource) //Add the main sources.
-        archiveClassifier.set("withDepends") //Set the classifier.
+        archiveClassifier.set("shaded") //Set the classifier.
         configurations = listOf(project.configurations.runtimeClasspath.get()) //Set the configurations.
-        archiveFileName.set("${project.name}-${project.version}-with-depends.jar") //Set the archive file name.
+        archiveFileName.set("${project.name}-${project.version}-shaded.jar") //Set the archive file name.
         relocate("com.google.gson", "net.cameronbowe.relocated.com.google.gson") //Relocate gson (so it doesn't conflict with other plugins).
         relocate("org.apache", "net.cameronbowe.relocated.org.apache") //Relocate apache (so it doesn't conflict with other plugins).
         exclude("mozilla/**", "META-INF/**", "module-info.class") //Exclude some stuff.
@@ -116,10 +108,14 @@ publishing {
     //The publishing publications (what to publish).
     publications {
         create<MavenPublication>("module") {
+
+            //The artifact information.
             artifactId = project.name //Set the artifact ID.
             groupId = project.group.toString() //Set the group ID.
             version = project.version.toString() //Set the version.
             from(components["java"]) //From the java component.
+
+            //The pom information.
             pom {
 
                 //The basic information.
@@ -141,6 +137,13 @@ publishing {
                         id = "cameronbowe" //Set the ID.
                         name = "Cameron Bowe" //Set the name.
                         email = "contact@cameronbowe.net" //Set the email.
+                    }
+                }
+
+                //The contributor information.
+                contributors {
+                    contributor {
+                        name = "Vouchley" //Set the name.
                     }
                 }
 
