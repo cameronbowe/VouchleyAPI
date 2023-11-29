@@ -73,17 +73,21 @@ tasks {
 
 //The github release.
 githubRelease {
-    token(findProperty("githubToken") as String?) //Set the token.
-    releaseName = "${project.version}" //Set the release name.
+    token(findProperty("githubToken") as String?) //The github token.
+
+    //The release information.
     tagName = "${project.version}" //Set the tag name.
     targetCommitish = "master" //Set the target commitish.
+    releaseName = "${project.version}" //Set the release name.
     body = "The release of version ${project.version}." //Set the body.
     releaseAssets.setFrom(tasks["withDepends"], tasks["withoutDepends"]) //Set the release assets.
+
+    //The release options.
     generateReleaseNotes.set(false) //Don't generate release notes.
     allowUploadToExisting.set(true) //Allow upload to existing.
-    dryRun.set(false) //Don't dry run.
-    overwrite.set(true) //Allow overwrite.
     draft.set(false) //Don't make the release a draft.
+    overwrite.set(true) //Allow overwrite.
+    dryRun.set(false) //Don't dry run.
 
 }
 
