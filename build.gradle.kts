@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import java.nio.file.Files
 
 //The project's information.
 group = "net.cameronbowe" //The project's group.
@@ -29,6 +30,21 @@ dependencies {
 //The tasks.
 tasks {
 
+    jar {
+        delete("${project.name}-${project.version}.jar")
+    }
+
+    shadowJar {
+        delete("${project.name}-${project.version}-all.jar")
+    }
+
+    //The publishing task.
+    task("publishEverything") {
+        println("Publishing everything...") //Log that everything is being published.
+        dependsOn("publish", "githubRelease") //Depend on publishing and github release (to publish everything).
+        println("Publishing everything!") //Log that everything has been published.
+    }
+
     //The moving of old files task.
     task("moveOldFiles", type = Copy::class) {
         val versionRegex = Regex("""${project.version}""") //The version regex.
@@ -40,15 +56,8 @@ tasks {
         doLast { delete(oldFiles) } //Delete the old files.
     }
 
-    //The publishing task.
-    task("publishEverything") {
-        println("Publishing everything...")
-        dependsOn("publish", "githubRelease") //Depend on publishing and github release (to publish everything).
-        println("Publishing everything!")
-    }
-
-    //The without dependencies jar creation task.
-    task("withoutDepends", type = Jar::class) {
+    //The jar creation task.
+    jar {
         dependsOn("moveOldFiles") //Depend on moving old files.
         delete("${project.name}-${project.version}-without-depends.jar") //Delete the old jar (if it exists).
         from(sourceSets.main.get().allSource) //Add the main sources.
@@ -56,8 +65,8 @@ tasks {
         archiveFileName.set("${project.name}-${project.version}-without-depends.jar") //Set the file name.
     }
 
-    //The with dependencies jar creation task.
-    task("withDepends", type = ShadowJar::class) {
+    //The shadow jar creation task.
+    shadowJar {
         dependsOn("moveOldFiles") //Depend on moving old files.
         delete("${project.name}-${project.version}-with-depends.jar") //Delete the old jar (if it exists).
         from(sourceSets.main.get().allSource) //Add the main sources.
@@ -80,7 +89,7 @@ githubRelease {
     targetCommitish = "master" //Set the target commitish.
     releaseName = "${project.version}" //Set the release name.
     body = "The release of version ${project.version}." //Set the body.
-    releaseAssets.setFrom(tasks["withDepends"], tasks["withoutDepends"]) //Set the release assets.
+    releaseAssets.setFrom(tasks["shadowJar"].outputs.files, tasks["jar"].outputs.files) //Set the release assets.
 
     //The release options.
     generateReleaseNotes.set(false) //Don't generate release notes.
@@ -109,23 +118,38 @@ publishing {
 
     //The publishing publications (what to publish).
     publications {
-
-        //The without dependencies publication.
-        create<MavenPublication>("withoutDepends") {
+        create<MavenPublication>("module") {
             artifactId = project.name //Set the artifact ID.
             groupId = project.group.toString() //Set the group ID.
             version = project.version.toString() //Set the version.
-            artifact(tasks["withoutDepends"]) //Set the artifact.
-        }
+            from(components["java"]) //From the java component.
+            pom {
 
-        //The with dependencies publication.
-        create<MavenPublication>("withDepends") { //Create a maven publication.
-            artifactId = project.name //Set the artifact ID.
-            groupId = project.group.toString() //Set the group ID.
-            version = project.version.toString() //Set the version.
-            artifact(tasks["withDepends"]) //Set the artifact.
-        }
+                //The basic information.
+                name = project.name //Set the name.
+                url = "https://www.vouchley.com/" //Set the URL.
+                description = project.description //Set the description.
 
+                //The license information.
+                licenses {
+                    license {
+                        name = "Creative Commons Zero v1.0 Universal"
+                        url = "https://creativecommons.org/publicdomain/zero/1.0/"
+                    }
+                }
+
+                //The developer information.
+                developers {
+                    developer {
+                        id = "cameronbowe"
+                        name = "Cameron Bowe"
+                        email = "contact@cameronbowe.net"
+                    }
+                }
+
+            }
+
+        }
     }
 
 }
@@ -133,6 +157,5 @@ publishing {
 //The signing of the publications.
 signing {
     useGpgCmd() //Use the gpg command.
-    sign(publishing.publications["withoutDepends"]) //Sign the without dependencies publication.
-    sign(publishing.publications["withDepends"]) //Sign the with dependencies publication.
+    sign(publishing.publications["module"]) //Sign the module publication.
 }
