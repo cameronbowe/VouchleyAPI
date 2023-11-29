@@ -100,7 +100,7 @@ githubRelease {
     targetCommitish = "master" //Set the target commitish.
     releaseName = "${project.version}" //Set the release name.
     body = "The release of version ${project.version}." //Set the body.
-    releaseAssets.setFrom(tasks["shadowJar"].outputs.files, tasks["javadoc"].outputs.files.filter { file -> file.name.endsWith(".jar") }, tasks["jar"].outputs.files) //Set the release assets.
+    releaseAssets.setFrom(tasks["jar"].outputs, tasks["javadocJar"].outputs, tasks["shadowJar"].outputs) //Set the release assets.
 
     //The release options.
     generateReleaseNotes.set(false) //Don't generate release notes.
