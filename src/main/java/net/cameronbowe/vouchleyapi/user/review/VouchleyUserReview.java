@@ -8,6 +8,7 @@ package net.cameronbowe.vouchleyapi.user.review;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.cameronbowe.vouchleyapi.VouchleyAPI;
 import net.cameronbowe.vouchleyapi.exceptions.VouchleyException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -17,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 
 /*
  * Vouchley User Review
@@ -29,6 +31,12 @@ public class VouchleyUserReview {
 	private final int rating; //The rating of the user's review.
 	private final long timeSent; //The time the user's review was sent.
 	private final String message, reply, platform, product; //The message, reply, platform, and product of the user's review.
+
+	private static final Function<UUID, HttpGet> DESTINATION_ID = id -> {
+		final HttpGet httpGet = new HttpGet("https://www.vouchley.com/api/v1/review?id=" + id.toString()); //Set the destination for retrieving a user's review via their ID.
+		httpGet.addHeader("Authorization", "Bearer " + VouchleyAPI.getAPIKey()); //Add the authorization header.
+		return httpGet; //Return the destination.
+	}; //The destination for retrieving a user's review via their ID.
 
 	/**
 	 * Allows you to create a user's review.
@@ -68,7 +76,7 @@ public class VouchleyUserReview {
 	 * @throws VouchleyException If an exception occurs.
 	 */
 	public static VouchleyUserReview getFromID(final UUID id) throws VouchleyException {
-		try (final CloseableHttpResponse response = HttpClients.createMinimal().execute(new HttpGet("https://www.vouchley.com/api/v1/review?id=" + id.toString()))) { //Create the request.
+		try (final CloseableHttpResponse response = HttpClients.createMinimal().execute(DESTINATION_ID.apply(id))) { //Create the request.
 			if (response.getStatusLine().getStatusCode() != 200) return null; //If the request failed, return null.
 			final JsonObject jsonObject = JsonParser.parseString(EntityUtils.toString(response.getEntity())).getAsJsonObject(); //Parse the response.
 			return new VouchleyUserReview(UUID.fromString(jsonObject.get("id").getAsString()), UUID.fromString(jsonObject.get("receiver").getAsString()), UUID.fromString(jsonObject.get("sender").getAsString()), jsonObject.get("value").getAsDouble(), jsonObject.get("rating").getAsInt(), jsonObject.get("timeSent").getAsLong(), jsonObject.get("message").getAsString(), Optional.ofNullable(jsonObject.get("reply")).map(JsonElement::getAsString).orElse(null), jsonObject.get("platform").getAsString(), Optional.ofNullable(jsonObject.get("product")).map(JsonElement::getAsString).orElse(null)); //Return the user's review.

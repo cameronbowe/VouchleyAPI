@@ -1,6 +1,6 @@
 //The project's information.
 group = "net.cameronbowe" //The project's group.
-version = "1.0.0" //The project's version.
+version = "1.1.0" //The project's version.
 description = "A utility to access Vouchley's API with ease." //The project's description.
 
 //The gradle plugins.
@@ -27,26 +27,14 @@ dependencies {
 //The java information.
 java {
     withJavadocJar() //Create a javadoc jar.
+    withSourcesJar() //Create a sources jar.
 }
 
 //The tasks.
 tasks {
 
-    //The moving of old files task.
-    task("moveOldFiles", type = Copy::class) {
-        val versionRegex = Regex("""${project.version}""") //The version regex.
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE //Include duplicates.
-        val oldFiles = fileTree("build/libs") { include { fileTreeElement -> !fileTreeElement.isDirectory && !versionRegex.containsMatchIn(fileTreeElement.name) } } //Get the old files.
-        if (oldFiles.isEmpty) return@task //If there are no old files, return.
-        from(oldFiles) //From the old files.
-        into("build/libs/other") //Into the other libs folder.
-        doLast { delete(oldFiles) } //Delete the old files.
-    }
-
     //The javadoc creation task.
     javadoc {
-        dependsOn("moveOldFiles") //Depend on moving old files.
-        delete(project.name.lowercase() + "-${project.version}-javadoc.jar") //Delete the old jar (if it exists).
         options {
             encoding = "UTF-8" //Set the encoding.
             title = project.name //Set the title.
@@ -58,35 +46,21 @@ tasks {
 
     //The jar creation task.
     jar {
-        dependsOn("moveOldFiles") //Depend on moving old files.
-        delete(project.name.lowercase() + "-${project.version}.jar") //Delete the old jar (if it exists).
-
         archiveClassifier.set("") //Set the classifier.
-        from(sourceSets.main.get().allSource) //Add the main sources
-        exclude { fileTreeElement -> fileTreeElement.name.endsWith(".class") && fileTreeElement.path.startsWith("net/cameronbowe/vouchleyapi") } //Exclude class files.
-        archiveFileName.set(project.name.lowercase() + "-${project.version}.jar") //Set the archive file name.
     }
 
     //The shadow jar creation task.
     shadowJar {
-        dependsOn("moveOldFiles") //Depend on moving old files.
-        delete(project.name.lowercase() + "-${project.version}-shaded.jar") //Delete the old jar (if it exists).
-
         archiveClassifier.set("shaded") //Set the classifier.
-        from(sourceSets.main.get().allSource) //Add the main sources.
-        exclude { fileTreeElement -> fileTreeElement.name.endsWith(".class") && fileTreeElement.path.startsWith("net/cameronbowe/vouchleyapi") } //Exclude class files.
         configurations = listOf(project.configurations.runtimeClasspath.get()) //Set the configurations.
-        archiveFileName.set(project.name.lowercase() + "-${project.version}-shaded.jar") //Set the archive file name.
         relocate("com.google.gson", "net.cameronbowe.relocated.com.google.gson") //Relocate gson (so it doesn't conflict with other plugins).
         relocate("org.apache", "net.cameronbowe.relocated.org.apache") //Relocate apache (so it doesn't conflict with other plugins).
         exclude("mozilla/**", "META-INF/**", "module-info.class") //Exclude some stuff.
     }
 
-    //The publishing task.
+    //The publish everything task.
     task("publishEverything") {
-        println("Publishing everything...") //Log that everything is being published.
         dependsOn("publish", "githubRelease") //Depend on publishing and github release (to publish everything).
-        println("Publishing everything!") //Log that everything has been published.
     }
 
 }
@@ -100,7 +74,7 @@ githubRelease {
     targetCommitish = "master" //Set the target commitish.
     releaseName = "${project.version}" //Set the release name.
     body = "The release of version ${project.version}." //Set the body.
-    releaseAssets.setFrom(tasks["jar"].outputs, tasks["javadocJar"].outputs, tasks["shadowJar"].outputs) //Set the release assets.
+    releaseAssets.setFrom(tasks["shadowJar"].outputs, tasks["javadocJar"].outputs, tasks["sourcesJar"].outputs, tasks["jar"].outputs) //Set the release assets.
 
     //The release options.
     generateReleaseNotes.set(false) //Don't generate release notes.
@@ -132,7 +106,7 @@ publishing {
         create<MavenPublication>("module") {
 
             //The artifact information.
-            artifactId = project.name.lowercase() //Set the artifact ID.
+            artifactId = project.name //Set the artifact ID.
             groupId = project.group.toString() //Set the group ID.
             version = project.version.toString() //Set the version.
             from(components["java"]) //Set the artifact.

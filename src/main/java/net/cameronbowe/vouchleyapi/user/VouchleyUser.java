@@ -8,6 +8,7 @@ package net.cameronbowe.vouchleyapi.user;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.cameronbowe.vouchleyapi.VouchleyAPI;
 import net.cameronbowe.vouchleyapi.exceptions.VouchleyException;
 import net.cameronbowe.vouchleyapi.user.review.VouchleyUserReview;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * Vouchley User
@@ -34,8 +36,16 @@ public class VouchleyUser {
 	private final double totalValueTraded; //The total value traded of the user.
 	private final ArrayList<Integer> donatorBadges; //The donator badges of the user.
 
-	private static final String DESTINATION_ID = "id"; //The destination for retrieving a user via their ID.
-	private static final String DESTINATION_USERNAME = "username"; //The destination for retrieving a user via their username.
+	private static final Function<UUID, HttpGet> DESTINATION_ID = id -> {
+		final HttpGet httpGet = new HttpGet("https://www.vouchley.com/api/v1/user?id=" + id.toString()); //Set the destination for retrieving a user via their id.
+		httpGet.addHeader("Authorization", "Bearer " + VouchleyAPI.getAPIKey()); //Add the authorization header.
+		return httpGet; //Return the destination.
+	}; //The destination for retrieving a user via their id.
+	private static final Function<String, HttpGet> DESTINATION_USERNAME = username -> {
+		final HttpGet httpGet = new HttpGet("https://www.vouchley.com/api/v1/user?username=" + username); //Set the destination for retrieving a user via their username.
+		httpGet.addHeader("Authorization", "Bearer " + VouchleyAPI.getAPIKey()); //Add the authorization header.
+		return httpGet; //Return the destination.
+	}; //The destination for retrieving a userw via their username.
 
 	/**
 	 * Allows you to create a Vouchley user.
@@ -75,7 +85,7 @@ public class VouchleyUser {
 	 * @throws VouchleyException If an exception occurs.
 	 */
 	public static VouchleyUser getFromID(final UUID id) throws VouchleyException {
-		return get(DESTINATION_ID, id.toString()); //Return the user.
+		return get(DESTINATION_ID.apply(id)); //Return the user.
 	}
 
 	/*
@@ -89,22 +99,21 @@ public class VouchleyUser {
 	 * @throws VouchleyException If an exception occurs.
 	 */
 	public static VouchleyUser getFromUsername(final String username) throws VouchleyException {
-		return get(DESTINATION_USERNAME, username); //Return the user.
+		return get(DESTINATION_USERNAME.apply(username)); //Return the user.
 	}
 
 	/*
 	 * Allows you to retrieve a Vouchley user.
 	 *
-	 * This method serves as a wrapper
-	 * to save code & time for retrieval methods.
+	 * This method serves as a wrapper to
+	 * save code & time for retrieval methods.
 	 *
-	 * @param destination The destination for retrieving the user.
-	 * @param user The user to retrieve.
+	 * @param destination The destination.
 	 * @return The user.
 	 * @throws VouchleyException If an exception occurs.
 	 */
-	private static VouchleyUser get(final String destination, final String user) throws VouchleyException {
-		try (final CloseableHttpResponse response = HttpClients.createMinimal().execute(new HttpGet("https://www.vouchley.com/api/v1/user?" + destination + "=" + user))) { //Create the request.
+	private static VouchleyUser get(final HttpGet httpGet) throws VouchleyException {
+		try (final CloseableHttpResponse response = HttpClients.createMinimal().execute(httpGet)) { //Create the request.
 			if (response.getStatusLine().getStatusCode() != 200) return null; //If the request failed, return null.
 			final JsonObject jsonObject = JsonParser.parseString(EntityUtils.toString(response.getEntity())).getAsJsonObject(); //Parse the response.
 			return new VouchleyUser(UUID.fromString(jsonObject.get("id").getAsString()), Optional.ofNullable(jsonObject.get("displayName")).map(JsonElement::getAsString).orElse(null), jsonObject.get("username").getAsString(), jsonObject.get("title").getAsString(), jsonObject.get("avatarURL").getAsString(), jsonObject.get("discordId").getAsString(), null, jsonObject.get("averageRating").getAsInt(), jsonObject.get("totalValueTraded").getAsDouble(), Optional.ofNullable(jsonObject.get("donatorBadges")).map(jsonElement -> {

@@ -17,6 +17,26 @@ import java.util.UUID;
  */
 public class VouchleyAPI {
 
+	private static String API_KEY; //The API key.
+
+	/*
+	 * Allows you to set the API key.
+	 *
+	 * @param apiKey The API key.
+	 */
+	public static void setAPIKey(final String apiKey) {
+		API_KEY = apiKey; //Set the API key.
+	}
+
+	/*
+	 * Allows you to retrieve the API key.
+	 *
+	 * @return The API key.
+	 */
+	public static String getAPIKey() {
+		return API_KEY; //Return the API key.
+	}
+
 	/*
 	 * Allows you to retrieve a Vouchley user via their ID.
 	 *
@@ -56,7 +76,7 @@ public class VouchleyAPI {
 	 * @throws VouchleyException If an exception occurs.
 	 */
 	public static VouchleyUserReview getUserReviewById(final UUID id) throws VouchleyException {
-		return VouchleyUserReview.getFromID(id); //Return the user review by its ID.
+		return VouchleyUserReview.getFromID( id); //Return the user review by its ID.
 	}
 
 }
