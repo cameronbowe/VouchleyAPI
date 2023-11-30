@@ -1,6 +1,6 @@
 //The project's information.
 group = "net.cameronbowe" //The project's group.
-version = "1.1.0" //The project's version.
+version = "1.0.0" //The project's version.
 description = "A utility to access Vouchley's API with ease." //The project's description.
 
 //The gradle plugins.
