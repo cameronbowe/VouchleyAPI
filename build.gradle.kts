@@ -53,8 +53,8 @@ tasks {
     shadowJar {
         archiveClassifier.set("shaded") //Set the classifier.
         configurations = listOf(project.configurations.runtimeClasspath.get()) //Set the configurations.
-        relocate("com.google.gson", "net.cameronbowe.relocated.com.google.gson") //Relocate gson (so it doesn't conflict with other plugins).
-        relocate("org.apache", "net.cameronbowe.relocated.org.apache") //Relocate apache (so it doesn't conflict with other plugins).
+        relocate("org.apache", "net.cameronbowe.relocated.org.apache") //Relocate apache (so it doesn't conflict with other stuff).
+        relocate("com.google.gson", "net.cameronbowe.relocated.com.google.gson") //Relocate gson (so it doesn't conflict with other stuff).
         exclude("mozilla/**", "META-INF/**", "module-info.class") //Exclude some stuff.
     }
 
