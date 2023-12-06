@@ -53,9 +53,10 @@ tasks {
     shadowJar {
         archiveClassifier.set("shaded") //Set the classifier.
         configurations = listOf(project.configurations.runtimeClasspath.get()) //Set the configurations.
+        exclude("mozilla/**", "META-INF/**", "module-info.class") //Exclude some stuff.
         relocate("org.apache", "net.cameronbowe.relocated.org.apache") //Relocate apache (so it doesn't conflict with other stuff).
         relocate("com.google.gson", "net.cameronbowe.relocated.com.google.gson") //Relocate gson (so it doesn't conflict with other stuff).
-        exclude("mozilla/**", "META-INF/**", "module-info.class") //Exclude some stuff.
+        minimize() //Minimize the jar.
     }
 
     //The publish everything task.
